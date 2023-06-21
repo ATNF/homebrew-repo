@@ -17,7 +17,7 @@ class CasacoreAT350 < Formula
   depends_on "gcc"  # for gfortran
   depends_on "readline"
 
-  depends_on "casacore-data"
+  depends_on "atnf/repo/casacore-data"
 
   option "with-python", "Build Python bindings"
 
