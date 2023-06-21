@@ -12,7 +12,7 @@ class PythonCasacoreAT352 < Formula
   license ""
 
   depends_on "python@3.11"
-  depends_on "casacore" => :build
+  depends_on "casacore@3.5.0" => :build
   depends_on "boost-python3" => :build 
 
   def python3
