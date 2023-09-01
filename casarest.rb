@@ -1,8 +1,8 @@
 class Casarest < Formula
   desc 'The light-weight imager (lwimager) for radio astronomy'
   homepage 'https://github.com/ska-sa/meqtrees/wiki/LinkingWithCasaCore'
-  url 'https://svn.astron.nl/casarest/release/casarest/release-1.2.1'
-  head 'https://svn.astron.nl/casarest/trunk/casarest'
+  url 'https://github.com/casacore/casarest/archive/refs/tags/v1.8.1.tar.gz'
+  head 'https://github.com/casacore/casarest'
   env :std
 
   depends_on 'cmake' => :build
