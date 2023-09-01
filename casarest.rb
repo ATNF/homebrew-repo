@@ -3,6 +3,7 @@ class Casarest < Formula
   homepage 'https://github.com/ska-sa/meqtrees/wiki/LinkingWithCasaCore'
   url 'https://svn.astron.nl/casarest/release/casarest/release-1.2.1'
   head 'https://svn.astron.nl/casarest/trunk/casarest'
+  env :std
 
   depends_on 'cmake' => :build
   depends_on 'casacore@3.5.0'
@@ -24,9 +25,9 @@ class Casarest < Formula
 
   def install
     # Workaround to get fortran and C++ to play together (see Homebrew issue #20173)
-    ENV.append 'LDFLAGS', "-L/usr/lib -lstdc++"
+#    ENV.append 'LDFLAGS', "-L/usr/lib -lstdc++"
     # Force clang to use the old standard library for now (solves issue with complex type)
-    ENV.append 'CXXFLAGS', "-stdlib=libstdc++" if ENV.compiler == :clang
+#    ENV.append 'CXXFLAGS', "-stdlib=libstdc++" if ENV.compiler == :clang
     mkdir_p 'build'
     cd 'build'
     cmake_args = std_cmake_args
