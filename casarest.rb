@@ -5,7 +5,7 @@ class Casarest < Formula
   head 'https://svn.astron.nl/casarest/trunk/casarest'
 
   depends_on 'cmake' => :build
-  depends_on 'casacore'
+  depends_on 'casacore@3.5.0'
   depends_on 'boost'
   depends_on 'readline'
   depends_on 'wcslib'
