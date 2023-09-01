@@ -28,6 +28,7 @@ class Casarest < Formula
 #    ENV.append 'LDFLAGS', "-L/usr/lib -lstdc++"
     # Force clang to use the old standard library for now (solves issue with complex type)
 #    ENV.append 'CXXFLAGS', "-stdlib=libstdc++" if ENV.compiler == :clang
+		ENV.append 'CXXFLAGS', "-std=c++14"
     mkdir_p 'build'
     cd 'build'
     cmake_args = std_cmake_args
