@@ -21,11 +21,27 @@ class PyarrowAT900 < Formula
     sha256 "f1accae9a28dc3cda46a91de86acf69de0d1b5f4edd44a9b0c3ceb8036dfff19"
   end
 
+  def python3
+    "python3.11"
+  end
+
+#  def install
+#  	system python3, "setup.py", "build_ext", "-I/opt/homebrew/include",
+#	                                           "-L/opt/homebrew/lib"
+#    system python3, *Language::Python.setup_install_args(prefix, python3)
+#  end
+
+
   def install
     ENV["PYARROW_BUNDLE_ARROW_CPP_HEADERS"] = "0" 
   	ENV["PYARROW_WITH_PLASMA"] = "1"  
 #		ENV.append "PATH" "/opt/homebrew/bin"
-		virtualenv_install_with_resources
+	 	
+    system python3, "setup.py", "build_ext", "-I/opt/homebrew/include",
+	                                           "-L/opt/homebrew/lib"
+    system python3, *Language::Python.setup_install_args(prefix, python3)
+ 	
+#   virtualenv_install_with_resources
   end
 
   test do

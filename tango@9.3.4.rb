@@ -9,12 +9,17 @@ class TangoAT934 < Formula
   license ""
 
   # depends_on "cmake" => :build
+	depends_on "gsed" => :build
+	depends_on "omniorb"
+	depends_on "zeromq"
+	depends_on "mysql-client"
 
   def install
     # ENV.deparallelize  # if your formula fails when building in parallel
     # Remove unrecognized options if warned by configure
     # https://rubydoc.brew.sh/Formula.html#std_configure_args-instance_method
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    system "./configure", *std_configure_args, "--disable-silent-rules",
+			"--enable-java=yes --enable-mariadb=yes --enable-dbserver=yes --enable-dbcreate=yes --with-mysql-admin=root --with-mysql-admin-passwd='mypassword'"
     # system "cmake", "-S", ".", "-B", "build", *std_cmake_args
   end
 
