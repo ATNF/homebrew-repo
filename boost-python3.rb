@@ -50,7 +50,8 @@ class BoostPython3 < Formula
     # user-config.jam below.
     inreplace "bootstrap.sh", "using python", "#using python"
 
-    pyver = Language::Python.major_minor_version python3
+    pyver = "3.11"
+    # pyver = Language::Python.major_minor_version python3
     py_prefix = if OS.mac?
       Formula["python@#{pyver}"].opt_frameworks/"Python.framework/Versions"/pyver
     else
