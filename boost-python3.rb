@@ -52,37 +52,33 @@ class BoostPython3 < Formula
 
     pyver = "3.12"
     # pyver = Language::Python.major_minor_version python3
-    py_prefix = if OS.mac?
+    py12_prefix = if OS.mac?
       Formula["python@#{pyver}"].opt_frameworks/"Python.framework/Versions"/pyver
     else
       Formula["python@#{pyver}"].opt_prefix
     end
+
+    pyver = "3.11"
+    # pyver = Language::Python.major_minor_version python3
+    py11_prefix = if OS.mac?
+      Formula["python@#{pyver}"].opt_frameworks/"Python.framework/Versions"/pyver
+    else
+      Formula["python@#{pyver}"].opt_prefix
+    end
+
 
     # Force boost to compile with the desired compiler
     (buildpath/"user-config.jam").write <<~EOS
       using #{OS.mac? ? "darwin" : "gcc"} : : #{ENV.cxx} ;
       using python : 3.12
                    : python3.12
-                   : #{py_prefix}/include/python3.12}
-                   : #{py_prefix}/lib ;
-    EOS
-
-    pyver = "3.11"
-    # pyver = Language::Python.major_minor_version python3
-    py_prefix = if OS.mac?
-      Formula["python@#{pyver}"].opt_frameworks/"Python.framework/Versions"/pyver
-    else
-      Formula["python@#{pyver}"].opt_prefix
-    end
-
-    # Force boost to compile with the desired compiler
-    (buildpath/"user-config.jam").write <<~EOS
-      using python : #{pyver}
+                   : #{py12_prefix}/include/python3.12}
+                   : #{py12_prefix}/lib ;
+      using python : 3.11
                    : python3.11
-                   : #{py_prefix}/include/python#{pyver}
-                   : #{py_prefix}/lib ;
+                   : #{py11_prefix}/include/python3.11}
+                   : #{py11_prefix}/lib ;
     EOS
-
 
     system "./bootstrap.sh", "--prefix=#{prefix}",
                              "--libdir=#{lib}"
