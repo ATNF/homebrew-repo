@@ -1,4 +1,4 @@
-class BoostPython311 < Formula
+class BoostPython3AT11 < Formula
   desc "C++ library for C++/Python3 interoperability"
   homepage "https://www.boost.org/"
   url "https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.xz"
