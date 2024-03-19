@@ -1,4 +1,4 @@
-class BoostPython3 < Formula
+class BoostPython311 < Formula
   desc "C++ library for C++/Python3 interoperability"
   homepage "https://www.boost.org/"
   url "https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.xz"
@@ -22,10 +22,10 @@ class BoostPython3 < Formula
 
   depends_on "numpy" => :build
   depends_on "boost"
-  depends_on "python@3.12"
+  depends_on "python@3.11"
 
   def python3
-    "python3.12"
+    "python3.11"
   end
 
   def install
