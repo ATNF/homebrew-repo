@@ -1,4 +1,4 @@
-class BoostPython3AT11 < Formula
+class BoostPython3 < Formula
   desc "C++ library for C++/Python3 interoperability"
   homepage "https://www.boost.org/"
   url "https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.xz"
@@ -50,7 +50,7 @@ class BoostPython3AT11 < Formula
     # user-config.jam below.
     inreplace "bootstrap.sh", "using python", "#using python"
 
-    pyver = "3.11"
+    pyver = "3.12"
     # pyver = Language::Python.major_minor_version python3
     py_prefix = if OS.mac?
       Formula["python@#{pyver}"].opt_frameworks/"Python.framework/Versions"/pyver
@@ -61,11 +61,30 @@ class BoostPython3AT11 < Formula
     # Force boost to compile with the desired compiler
     (buildpath/"user-config.jam").write <<~EOS
       using #{OS.mac? ? "darwin" : "gcc"} : : #{ENV.cxx} ;
+      using python : 3.12
+                   : python3.12
+                   : #{py_prefix}/include/python3.12}
+                   : #{py_prefix}/lib ;
+    EOS
+
+    # for the legacy 3.11 build
+
+    pyver = "3.11"
+    # pyver = Language::Python.major_minor_version python3
+    py_prefix = if OS.mac?
+      Formula["python@#{pyver}"].opt_frameworks/"Python.framework/Versions"/pyver
+    else
+      Formula["python@#{pyver}"].opt_prefix
+    end
+
+    # Force boost to compile with the desired compiler
+    (buildpath/"user-config.jam").write <<~EOS
       using python : #{pyver}
-                   : #{python3}
+                   : python3.11
                    : #{py_prefix}/include/python#{pyver}
                    : #{py_prefix}/lib ;
     EOS
+
 
     system "./bootstrap.sh", "--prefix=#{prefix}",
                              "--libdir=#{lib}",
@@ -77,7 +96,7 @@ class BoostPython3AT11 < Formula
                    "--stagedir=stage-python3",
                    "--libdir=install-python3/lib",
                    "--prefix=install-python3",
-                   "python=#{pyver}",
+                   "python=3.11,3.12",
                    *args
 
     lib.install buildpath.glob("install-python3/lib/*.*")
