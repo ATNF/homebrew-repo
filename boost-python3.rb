@@ -66,6 +66,19 @@ class BoostPython3 < Formula
                    : #{py_prefix}/include/python3.12}
                    : #{py_prefix}/lib ;
     EOS
+    system "./bootstrap.sh", "--prefix=#{prefix}",
+                             "--libdir=#{lib}",
+                             "--with-libraries=python",
+                             "--with-python=python3.12",
+                             "--with-python-root=#{py_prefix}"
+
+    system "./b2", "--build-dir=build-python3",
+                   "--stagedir=stage-python3",
+                   "--libdir=install-python3/lib",
+                   "--prefix=install-python3",
+                   "python=3.12",
+                   *args
+
 
     # for the legacy 3.11 build
 
@@ -89,14 +102,14 @@ class BoostPython3 < Formula
     system "./bootstrap.sh", "--prefix=#{prefix}",
                              "--libdir=#{lib}",
                              "--with-libraries=python",
-                             "--with-python=#{python3}",
+                             "--with-python=python3.11",
                              "--with-python-root=#{py_prefix}"
 
     system "./b2", "--build-dir=build-python3",
                    "--stagedir=stage-python3",
                    "--libdir=install-python3/lib",
                    "--prefix=install-python3",
-                   "python=3.11,3.12",
+                   "python=3.11",
                    *args
 
     lib.install buildpath.glob("install-python3/lib/*.*")
