@@ -80,10 +80,10 @@ class BoostPython3 < Formula
                    "python=#{pyver}",
                    *args
 
-    lib.install buildpath.glob("install-python3/lib/*.*")
-    (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_python*")
-    (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_numpy*")
-    doc.install (buildpath/"libs/python/doc").children
+#    lib.install buildpath.glob("install-python3/lib/*.*")
+#    (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_python*")
+#    (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_numpy*")
+#    doc.install (buildpath/"libs/python/doc").children
 
     # pyver = Language::Python.major_minor_version python3
     pyver = "3.12"
