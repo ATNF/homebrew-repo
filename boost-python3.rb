@@ -84,6 +84,22 @@ class BoostPython3 < Formula
 #    (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_python*")
 #    (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_numpy*")
 #    doc.install (buildpath/"libs/python/doc").children
+     
+    args = %W[
+      -d2
+      -j#{ENV.make_jobs}
+      --layout=tagged-1.66
+      --user-config=user-config-2.jam
+      install
+      threading=multi,single
+      link=shared,static
+    ]
+
+    # Boost is using "clang++ -x c" to select C compiler which breaks C++14
+    # handling using ENV.cxx14. Using "cxxflags" and "linkflags" still works.
+    args << "cxxflags=-std=c++14"
+    args << "cxxflags=-stdlib=libc++" << "linkflags=-stdlib=libc++" if ENV.compiler == :clang
+
 
     # pyver = Language::Python.major_minor_version python3
     pyver = "3.12"
@@ -94,7 +110,7 @@ class BoostPython3 < Formula
     end
 
     # Force boost to compile with the desired compiler
-    (buildpath/"user-config.jam").write <<~EOS
+    (buildpath/"user-config-2.jam").write <<~EOS
       using #{OS.mac? ? "darwin" : "gcc"} : : #{ENV.cxx} ;
       using python : #{pyver}
                    : #{python3}
