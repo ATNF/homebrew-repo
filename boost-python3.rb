@@ -22,10 +22,10 @@ class BoostPython3 < Formula
 
   depends_on "numpy" => :build
   depends_on "boost"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
 
   def python3
-    "python3.11"
+    "python3.12"
   end
 
   def install
@@ -50,37 +50,34 @@ class BoostPython3 < Formula
     # user-config.jam below.
     inreplace "bootstrap.sh", "using python", "#using python"
 
-    pyver = "3.11"
-    # pyver = Language::Python.major_minor_version python3
-    py11_prefix = if OS.mac?
+    pyver = Language::Python.major_minor_version python3
+    py_prefix = if OS.mac?
       Formula["python@#{pyver}"].opt_frameworks/"Python.framework/Versions"/pyver
     else
       Formula["python@#{pyver}"].opt_prefix
     end
 
-
     # Force boost to compile with the desired compiler
     (buildpath/"user-config.jam").write <<~EOS
       using #{OS.mac? ? "darwin" : "gcc"} : : #{ENV.cxx} ;
-      using python : 3.11
-                   : python3.11
-                   : #{py11_prefix}/include/python3.11}
-                   : #{py11_prefix}/lib ;
+      using python : #{pyver}
+                   : #{python3}
+                   : #{py_prefix}/include/python#{pyver}
+                   : #{py_prefix}/lib ;
     EOS
 
     system "./bootstrap.sh", "--prefix=#{prefix}",
                              "--libdir=#{lib}",
                              "--with-libraries=python",
-                             "--with-python=python3.11",
--                             "--with-python-root=#{py11_prefix}"
+                             "--with-python=#{python3}",
+                             "--with-python-root=#{py_prefix}"
 
     system "./b2", "--build-dir=build-python3",
                    "--stagedir=stage-python3",
                    "--libdir=install-python3/lib",
                    "--prefix=install-python3",
-                   "python=3.11",
+                   "python=#{pyver}",
                    *args
-
 
     lib.install buildpath.glob("install-python3/lib/*.*")
     (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_python*")
