@@ -84,6 +84,43 @@ class BoostPython3 < Formula
     (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_python*")
     (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_numpy*")
     doc.install (buildpath/"libs/python/doc").children
+
+    # pyver = Language::Python.major_minor_version python3
+    pyver = "3.12"
+    py_prefix = if OS.mac?
+      Formula["python@#{pyver}"].opt_frameworks/"Python.framework/Versions"/pyver
+    else
+      Formula["python@#{pyver}"].opt_prefix
+    end
+
+    # Force boost to compile with the desired compiler
+    (buildpath/"user-config.jam").write <<~EOS
+      using #{OS.mac? ? "darwin" : "gcc"} : : #{ENV.cxx} ;
+      using python : #{pyver}
+                   : #{python3}
+                   : #{py_prefix}/include/python#{pyver}
+                   : #{py_prefix}/lib ;
+    EOS
+
+    system "./bootstrap.sh", "--prefix=#{prefix}",
+                             "--libdir=#{lib}",
+                             "--with-libraries=python",
+                             "--with-python=python3.12",
+                             "--with-python-root=#{py_prefix}"
+
+    system "./b2", "--build-dir=build-python3",
+                   "--stagedir=stage-python3",
+                   "--libdir=install-python3/lib",
+                   "--prefix=install-python3",
+                   "python=#{pyver}",
+                   *args
+
+    lib.install buildpath.glob("install-python3/lib/*.*")
+    (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_python*")
+    (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_numpy*")
+    doc.install (buildpath/"libs/python/doc").children
+
+
   end
 
   test do
