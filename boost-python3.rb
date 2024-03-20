@@ -81,7 +81,8 @@ class BoostPython3 < Formula
     EOS
 
     system "./bootstrap.sh", "--prefix=#{prefix}",
-                             "--libdir=#{lib}"
+                             "--libdir=#{lib}",
+                             "--with-libraries=python"
 
     system "./b2", "--build-dir=build-python3",
                    "--stagedir=stage-python3",
