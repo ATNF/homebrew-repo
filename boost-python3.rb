@@ -22,10 +22,10 @@ class BoostPython3 < Formula
 
   depends_on "numpy" => :build
   depends_on "boost"
-  depends_on "python@3.12"
+  depends_on "python@3.11"
 
   def python3
-    "python3.12"
+    "python3.11"
   end
 
   def install
@@ -50,7 +50,8 @@ class BoostPython3 < Formula
     # user-config.jam below.
     inreplace "bootstrap.sh", "using python", "#using python"
 
-    pyver = Language::Python.major_minor_version python3
+    # pyver = Language::Python.major_minor_version python3
+    pyver = "3.11"
     py_prefix = if OS.mac?
       Formula["python@#{pyver}"].opt_frameworks/"Python.framework/Versions"/pyver
     else
